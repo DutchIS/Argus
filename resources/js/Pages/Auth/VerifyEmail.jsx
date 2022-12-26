@@ -1,6 +1,6 @@
-import GuestLayout from '@/Layouts/StatusLayout';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { Head, Link, useForm } from '@inertiajs/inertia-react';
+import AuthLayout from '@/Layouts/AuthLayout';
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm();
@@ -12,7 +12,7 @@ export default function VerifyEmail({ status }) {
     };
 
     return (
-        <GuestLayout>
+        <AuthLayout title="Email Verification">
             <Head title="Email Verification" />
 
             <div className="mb-4 text-sm text-gray-600">
@@ -40,6 +40,6 @@ export default function VerifyEmail({ status }) {
                     </Link>
                 </div>
             </form>
-        </GuestLayout>
+        </AuthLayout>
     );
 }

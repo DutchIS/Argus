@@ -1,15 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Status\OverviewController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 Route::get('/', [OverviewController::class, 'index'])->name('status.overview');
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
