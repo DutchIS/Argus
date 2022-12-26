@@ -14,4 +14,3 @@ You can currently monitor your service with the following:
 
 ## Demo
 [You can view our status page here](https://dutchisstatus.nl)
-
