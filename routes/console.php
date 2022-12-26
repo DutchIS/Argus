@@ -2,9 +2,10 @@
 
 use App\Models\Incident;
 use App\Models\Monitor;
-use App\Models\Ping;
+use App\Models\Ping as PingModel;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use JJG\Ping;
 
 Artisan::command('monitors:run', function () {
     echo("running monitors\n");
@@ -32,9 +33,9 @@ Artisan::command('monitors:run', function () {
             }
 
             $ms_time = (microtime(true) - $start_time) * 1000;
-            $ping = explode('.', $ms_time)[0] . "\n";
+            $ping = round($ms_time, 0);
         
-            $db_ping = new Ping();
+            $db_ping = new PingModel();
             $db_ping->monitor_id = $monitor->id;
             $db_ping->ms = $ping;
             $db_ping->save();
@@ -44,6 +45,37 @@ Artisan::command('monitors:run', function () {
             foreach($incidents as $incident) {
                 $incident->finished_at = now();
                 $incident->save();
+            }
+        }
+
+        if ($monitor->type == 'ping') {
+            $ping = new \JJG\Ping($monitor->destination);
+            $latency = $ping->ping();
+
+            if (!$latency) {
+                $runningIncidentCount = Incident::where('monitor_id', $monitor->id)->whereNull('finished_at')->count();
+
+                if ($runningIncidentCount == 0) {
+                    $incident = new Incident();
+                    $incident->monitor_id = $monitor->id;
+                    $incident->reason = 'Host unreachable';
+                    $incident->finished_at = null;
+                    $incident->save();
+                }
+            }
+
+            if ($latency) {
+                $db_ping = new PingModel();
+                $db_ping->monitor_id = $monitor->id;
+                $db_ping->ms = round($latency, 0);
+                $db_ping->save();
+
+                $incidents = Incident::where('monitor_id', $monitor->id)->whereNull('finished_at')->get();
+
+                foreach($incidents as $incident) {
+                    $incident->finished_at = now();
+                    $incident->save();
+                }
             }
         }
     }
