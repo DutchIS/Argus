@@ -18,7 +18,7 @@ export default function Group(props) {
                                 <div className="flex">
                                     <h3 className='text-xl'>{monitor.name}</h3>
                                     {monitor.online ?
-                                        <label className="bg-green-200 text-green-600 ml-2 text-sm font-bold rounded-md px-2 py-1">{monitor.ping}ms</label>
+                                        <label className="bg-green-200 text-green-600 ml-2 text-sm font-bold rounded-md px-2 py-1">{(monitor.ping == 0) ? '>1' : monitor.ping}ms</label>
                                     :
                                         <label className="bg-red-200 text-red-600 ml-2 text-sm font-bold rounded-md px-2 py-1">Offline</label>
                                     }
