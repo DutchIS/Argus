@@ -25,15 +25,19 @@ export default function Group(props) {
                                 </div>
 
                                 <div className="ml-auto flex">
-                                    {monitor.incident_days.map((incidents, index) => (
-                                        (incidents == 0) ?
-                                            <div>
-                                                <label className="bg-green-200 hover:bg-green-300 transition-colors px-1 py-2 rounded-md ml-1"></label>
+                                    {monitor.incident_days.map((day, index) => (
+                                        (day.downtime == 0) ?
+                                            <div className="relative group">
+                                                <div className="absolute left-full top-1/2 z-20 ml-3 -translate-y-1/2 whitespace-nowrap rounded bg-black py-[6px] px-4 text-sm font-semibold text-white hidden group-hover:block">
+                                                    No downtime today
+                                                </div>
+                                                <label className="bg-green-200 group-hover:bg-green-300 transition-colors px-1 py-2 rounded-md ml-1"></label>
                                             </div>
                                         :
                                             <div className="relative group">
                                                 <div className="absolute left-full top-1/2 z-20 ml-3 -translate-y-1/2 whitespace-nowrap rounded bg-black py-[6px] px-4 text-sm font-semibold text-white hidden group-hover:block">
-                                                    {incidents} incident on this day.
+                                                    {day.incidents.length} incident on this day.<br/>
+                                                    Totaling {day.downtime} minutes.
                                                 </div>
                                                 <label className="bg-red-200 group-hover:bg-red-300 transition-colors px-1 py-2 rounded-md ml-1"></label>
                                             </div>
