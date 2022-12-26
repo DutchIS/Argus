@@ -8,3 +8,6 @@ This project is currently still in development and is not ready for production u
 You can currently monitor your service with the following:
 - HTTP(S)
 - Ping
+
+## Installation
+[You can find an installation guide here!](https://github.com/DutchIS/ClearStatus/wiki/installation)
