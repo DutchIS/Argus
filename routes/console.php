@@ -1,19 +1,65 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
+use App\Models\Incident;
+use App\Models\Monitor;
+use App\Models\Ping;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Http;
 
-/*
-|--------------------------------------------------------------------------
-| Console Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
-|
-*/
+Artisan::command('monitors:run', function () {
+    echo("running monitors\n");
+    $monitors = Monitor::get();
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+
+    foreach($monitors as $monitor) {
+        if ($monitor->type == 'http') {
+            $start_time = microtime(true);
+
+            try {
+                Http::withoutVerifying()->get($monitor->destination);
+            } catch (\Exception $e) {
+                $runningIncidentCount = Incident::where('monitor_id', $monitor->id)->whereNull('finished_at')->count();
+
+                if ($runningIncidentCount == 0) {
+                    $incident = new Incident();
+                    $incident->monitor_id = $monitor->id;
+                    $incident->reason = 'HTTP request failed';
+                    $incident->finished_at = null;
+                    $incident->save();
+                }
+
+                continue;
+            }
+
+            $ms_time = (microtime(true) - $start_time) * 1000;
+            $ping = explode('.', $ms_time)[0] . "\n";
+        
+            $db_ping = new Ping();
+            $db_ping->monitor_id = $monitor->id;
+            $db_ping->ms = $ping;
+            $db_ping->save();
+
+            $incidents = Incident::where('monitor_id', $monitor->id)->whereNull('finished_at')->get();
+
+            foreach($incidents as $incident) {
+                $incident->finished_at = now();
+                $incident->save();
+            }
+        }
+    }
+    
+    echo("finished running monitors\n");
+})->purpose('run monitors');
+
+Artisan::command('pings:prune', function () {
+    echo("pruning old pings\n");
+    $pings = Ping::get();
+
+    foreach($pings as $ping) {
+        if ($ping->created_at->diffInDays(now()) > 30) {
+            $ping->delete();
+        }
+    }
+    
+    echo("finished pruning pings\n");
+})->purpose('prune pings older than 30 days');
