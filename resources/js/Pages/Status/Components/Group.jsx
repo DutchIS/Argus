@@ -2,8 +2,8 @@ export default function Group(props) {
     return (
         <div className="mb-8">
             <div className="mb-4">
-                <h2 className='text-3xl'>{props.group.name}</h2>
-                <p>{props.group.description}</p>
+                <h2 className='text-2xl'>{props.group.name}</h2>
+                <p className="text-md">{props.group.description}</p>
             </div>
 
             <div className="bg-white rounded-md border-2">
