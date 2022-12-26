@@ -3,3 +3,8 @@
 ## About
 Welcome to the ClearStatus repository. ClearStatus will be our status page for DutchIS. 
 This project is currently still in development and is not ready for production use.
+
+## Supported monitors
+You can currently monitor your service with the following:
+- HTTP(S)
+- Ping
