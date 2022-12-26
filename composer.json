@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
+    "name": "dutchis/argus",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "A giant with a hundred eyes",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
