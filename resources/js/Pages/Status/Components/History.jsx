@@ -31,8 +31,6 @@ function Day(props) {
 export default function History() {
     const { status_history } = usePage().props
 
-    console.log(status_history);
-
     return (
         <>
             <h2 className="text-2xl mb-2">Status History</h2>

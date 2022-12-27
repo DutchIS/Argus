@@ -24,7 +24,7 @@ Artisan::command('monitors:run', function () {
                 if ($runningIncidentCount == 0) {
                     $incident = new Incident();
                     $incident->monitor_id = $monitor->id;
-                    $incident->reason = 'HTTP request failed';
+                    $incident->reason = "HTTP request to {$monitor->name} failed";
                     $incident->finished_at = null;
                     $incident->save();
                 }
@@ -58,7 +58,7 @@ Artisan::command('monitors:run', function () {
                 if ($runningIncidentCount == 0) {
                     $incident = new Incident();
                     $incident->monitor_id = $monitor->id;
-                    $incident->reason = 'Host unreachable';
+                    $incident->reason = "Could not ping {$monitor->name}";
                     $incident->finished_at = null;
                     $incident->save();
                 }
