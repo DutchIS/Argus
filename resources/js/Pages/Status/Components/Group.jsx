@@ -1,3 +1,6 @@
+import { faArrowUpRightFromSquare } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 export default function Group(props) {
     return (
         <div className="mb-8">
@@ -16,7 +19,12 @@ export default function Group(props) {
                         <div key={monitor.id} className={(props.group.monitors.length - 1) != index && 'border-b-2'}>
                             <div className="m-4 flex">
                                 <div className="flex">
-                                    <h3 className='text-xl'>{monitor.name}</h3>
+                                    {(monitor.type == 'http') ?
+                                        <a className='text-xl hover:underline' target="_blank" href={monitor.destination}>{monitor.name} <FontAwesomeIcon icon={faArrowUpRightFromSquare} className='text-sm text-gray-600'/></a>
+                                    :
+                                        <h3 className='text-xl'>{monitor.name}</h3>
+                                    }
+
                                     {monitor.online ?
                                         <label className="bg-green-200 text-green-600 ml-2 text-sm font-bold rounded-md px-2 py-1">{(monitor.ping == 0) ? '>1' : monitor.ping}ms</label>
                                     :

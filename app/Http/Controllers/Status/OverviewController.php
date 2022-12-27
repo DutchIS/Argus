@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Group;
 use App\Models\Incident;
 use App\Models\Ping;
+use Carbon\Carbon;
 use Inertia\Inertia;
 
 class OverviewController extends Controller
@@ -13,6 +14,7 @@ class OverviewController extends Controller
     public function index() {
         $groups = Group::get();
         $incidents_ongoing = Incident::where('finished_at', null)->count();
+        $status_history = [];
 
         foreach($groups as $group) {
             $monitors = [];
@@ -54,10 +56,34 @@ class OverviewController extends Controller
 
             $group->monitors = $monitors;
         }
+
+        for($i = 0; $i <= 15; $i++) {
+            $day = (object) [
+                'downtime' => 0,
+                'incidents' => []
+            ];
+
+            foreach(Incident::where('created_at', '>=', Carbon::now()->subDays(15)->toDateTimeString())->get() as $incident) {
+                if ($incident->created_at->diffInDays(now()) == $i) {
+                    $downtime = $incident->created_at->diffInMinutes($incident->finished_at);
+                    $day->downtime += $downtime;
+                    
+                    array_push($day->incidents, [
+                        'downtime' => $downtime,
+                        'reason' => $incident->reason,
+                        'created_at' => $incident->created_at,
+                        'finished_at' => $incident->finished_at
+                    ]);
+                }
+            }
+
+            array_push($status_history, $day);
+        }
         
         return Inertia::render('Status/Index', [
             'groups' => $groups,
-            'incidents_ongoing' => $incidents_ongoing
+            'incidents_ongoing' => $incidents_ongoing,
+            'status_history' => $status_history
         ]);
     }
 }
