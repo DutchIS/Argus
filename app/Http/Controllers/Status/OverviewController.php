@@ -27,7 +27,13 @@ class OverviewController extends Controller
                 foreach($pings as $ping) {
                     $avg_ping += $ping->ms;
                 }
-                $monitor->ping = round($avg_ping / $pings->count(), 0);
+                
+                if ($avg_ping != 0) {
+                    $monitor->ping = round($avg_ping / $pings->count(), 0);
+                } else {
+                    $monitor->ping = 0;
+                }
+
                 $incident_days = [];
                 
                 for($i = 30; $i >= 0; $i--) {
