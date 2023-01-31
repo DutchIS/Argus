@@ -49,7 +49,7 @@ Artisan::command('monitors:run', function () {
         }
 
         if ($monitor->type == 'ping') {
-            $ping = new \JJG\Ping($monitor->destination);
+            $ping = new Ping($monitor->destination);
             $latency = $ping->ping();
 
             if (!$latency) {
@@ -85,7 +85,7 @@ Artisan::command('monitors:run', function () {
 
 Artisan::command('pings:prune', function () {
     echo("pruning old pings\n");
-    $pings = Ping::get();
+    $pings = PingModel::get();
 
     foreach($pings as $ping) {
         if ($ping->created_at->diffInDays(now()) > 30) {
