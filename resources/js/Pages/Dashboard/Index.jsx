@@ -1,6 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage } from '@inertiajs/inertia-react';
-import StatCard from './Components/StatCard';
+import StatCard from '../../Components/StatCard';
 import { faAngleUp, faAngleDown, faCheck, faClock } from '@fortawesome/free-solid-svg-icons'
 
 export default function Dashboard(props) {
@@ -16,7 +16,7 @@ export default function Dashboard(props) {
             <Head title="Dashboard" />
 
             <h2 className='text-2xl mb-2'>Statistics</h2>
-            <div className='grid grid-cols-4 gap-4'>
+            <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
                 <StatCard icon={faAngleDown} title={'Services Down'} value={services_down}/>
                 <StatCard icon={faAngleUp} title={'Services Up'} value={services_up}/>
                 <StatCard icon={faClock} title={'Total Downtime'} value={downtime + ' minutes'}/>

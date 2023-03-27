@@ -25,10 +25,13 @@ export default function Group(props) {
                                         <h3 className='text-xl'>{monitor.name}</h3>
                                     }
 
-                                    {monitor.online ?
-                                        <label className="bg-green-200 text-green-600 ml-2 text-sm font-bold rounded-md px-2 py-0.5 flex items-center">{(monitor.ping == 0) ? '>1' : monitor.ping}ms</label>
-                                    :
-                                        <label className="bg-red-200 text-red-700 ml-2 text-sm font-bold rounded-md px-2 py-0.5 flex items-center">Offline</label>
+                                    {monitor.maintenance_at && (new Date(monitor.maintenance_at) < new Date()) ?
+                                        <label className="bg-orange-200 text-orange-700 ml-2 text-sm font-bold rounded-md px-2 py-0.5 flex items-center">Maintainance</label>
+                                        :
+                                        monitor.online ?
+                                            <label className="bg-green-200 text-green-600 ml-2 text-sm font-bold rounded-md px-2 py-0.5 flex items-center">{(monitor.ping == 0) ? '>1' : monitor.ping}ms</label>
+                                        :
+                                            <label className="bg-red-200 text-red-700 ml-2 text-sm font-bold rounded-md px-2 py-0.5 flex items-center">Offline</label>
                                     }
                                 </div>
 
@@ -37,7 +40,7 @@ export default function Group(props) {
                                         (day.downtime == 0) ?
                                             <div key={index} className="relative group">
                                                 <div className="absolute left-full top-1/2 z-20 ml-3 -translate-y-1/2 whitespace-nowrap rounded bg-black py-[6px] px-4 text-sm font-semibold text-white hidden group-hover:block">
-                                                    No downtime today
+                                                    No downtime on this day.
                                                 </div>
                                                 <label className="bg-green-200 group-hover:bg-green-300 transition-colors px-0.5 sm:px-1 py-0.5 sm:py-2 rounded-md ml-1"></label>
                                             </div>

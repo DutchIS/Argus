@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { createInertiaApp } from '@inertiajs/inertia-react';
 import { InertiaProgress } from '@inertiajs/progress';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { Toaster } from 'react-hot-toast';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Argus';
 
@@ -13,7 +14,12 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render(<App {...props} />);
+        root.render(
+            <>
+                <Toaster/>
+                <App {...props} />
+            </>
+        );
     },
 });
 

@@ -24,6 +24,10 @@ export default function Authenticated({ auth, children }) {
                                 <NavLink href={route('dashboard.index')} active={route().current('dashboard.index')}>
                                     Dashboard
                                 </NavLink>
+                                
+                                <NavLink href={route('monitors.index')} active={route().current('monitors.index')}>
+                                    Monitors
+                                </NavLink>
                             </div>
                         </div>
 
@@ -67,7 +71,7 @@ export default function Authenticated({ auth, children }) {
                         <div className="-mr-2 flex items-center sm:hidden">
                             <button
                                 onClick={() => setShowingNavigationDropdown((previousState) => !previousState)}
-                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:text-gray-500 transition duration-150 ease-in-out"
                             >
                                 <svg className="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     <path
@@ -95,14 +99,18 @@ export default function Authenticated({ auth, children }) {
                         <ResponsiveNavLink href={route('dashboard.index')} active={route().current('dashboard.index')}>
                             Dashboard
                         </ResponsiveNavLink>
+                        
+                        <ResponsiveNavLink href={route('monitors.index')} active={route().current('monitors.index')}>
+                            Monitors
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">
+                            <div className="font-medium text-base text-gray-100">
                                 {auth.user.name}
                             </div>
-                            <div className="font-medium text-sm text-gray-500">{auth.user.email}</div>
+                            <div className="font-medium text-sm text-gray-300">{auth.user.email}</div>
                         </div>
 
                         <div className="mt-3 space-y-1">
